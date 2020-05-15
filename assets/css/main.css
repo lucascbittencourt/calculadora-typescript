@@ -11,13 +11,7 @@
 
 @font-face {
     font-family: 'Digital-7';
-    src: url('../digital-7.ttf');
-}
-
-#display-date-hour{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    width: 100%;
+    src: url('digital-7.ttf');
 }
 
 #display{
@@ -34,14 +28,32 @@
     
 }
 
-#display > input {
-    font-family: '../digital-7.ttf';
+#display-date-hour{
+    font-family: 'Digital-7';
+    display: grid;
+    font-size: 18px;
+    grid-template-columns: 1fr 1fr;
+    margin: 5px;
+}
+
+#display-date{
+    font-family: 'Digital-7';
     text-align: right;
-    border: none;
+    
+    
+}
+
+#display-hour{
+    text-align: left;
+}
+
+#display-operation{
     background-color: transparent;
+    font-family: 'Digital-7';
+    font-size: 60px;
+    text-align: right;
     color: #808080;
-    font-size: 45px;
-    max-width: 270px;
+    margin: 8px 5px;
 }
 
 #calc-buttons{
