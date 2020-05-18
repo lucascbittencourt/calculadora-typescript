@@ -146,6 +146,7 @@ class Calculator {
     }
     execBtn(value) {
         this.playAudio();
+        console.log(value);
         switch (value) {
             case 'AC':
                 this.clearAll();
@@ -196,6 +197,8 @@ class Calculator {
         buttons.forEach((btn) => {
             this.addEventListenerAll(btn, 'click drag ', () => {
                 let textBtn = btn.innerHTML;
+                if (textBtn == '÷')
+                    textBtn = '/';
                 this.execBtn(textBtn);
             });
             this.addEventListenerAll(btn, 'mouseover mouseup mousedown', () => {

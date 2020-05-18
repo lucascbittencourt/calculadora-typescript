@@ -277,6 +277,8 @@ class Calculator
 
             this.addEventListenerAll(btn, 'click drag ', (): void => {
                 let textBtn = btn.innerHTML
+                
+                if (textBtn == '÷') textBtn = '/'
 
                 this.execBtn(textBtn)
             })
