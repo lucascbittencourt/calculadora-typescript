@@ -12,6 +12,7 @@ class Calculator {
         this._hour = document.querySelector('#display-hour');
         this.initialize();
         this.initButtonsEvents();
+        this.initKeyboard();
     }
     initialize() {
         this.setDisplayDateTime();
@@ -29,6 +30,58 @@ class Calculator {
             this._audio.currentTime = 0;
             this._audio.play();
         }
+    }
+    copyToClipBoard() {
+        let input = document.createElement('input');
+        input.value = this.display;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("Copy");
+        input.remove();
+    }
+    initKeyboard() {
+        document.addEventListener('keyup', (e) => {
+            this.playAudio();
+            switch (e.key) {
+                case 'Escape':
+                    this.clearAll();
+                    break;
+                case 'Backspace':
+                    this.clearEntry();
+                    break;
+                case '+':
+                case '-':
+                case '/':
+                case '*':
+                case '%':
+                    this.addOperation(e.key);
+                    break;
+                case 'Enter':
+                case '=':
+                    this.calc();
+                    break;
+                case '.':
+                case ',':
+                    this.addDot();
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    this.addOperation(e.key);
+                    break;
+                case 'c':
+                    if (e.ctrlKey)
+                        this.copyToClipBoard();
+                    break;
+            }
+        });
     }
     addEventListenerAll(element, events, fn) {
         events.split(" ").forEach(event => {
