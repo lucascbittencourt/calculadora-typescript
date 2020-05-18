@@ -1,6 +1,5 @@
-"use strict";
-class Calculator {
-    constructor() {
+var Calculator = /** @class */ (function () {
+    function Calculator() {
         this._audio = new Audio('./assets/click.mp3');
         this._audioOnOff = false;
         this._lastOperator = '';
@@ -13,66 +12,68 @@ class Calculator {
         this.initialize();
         this.initButtonsEvents();
     }
-    initialize() {
+    Calculator.prototype.initialize = function () {
+        var _this = this;
         this.setDisplayDateTime();
-        setInterval(() => this.setDisplayDateTime(), 1000);
+        setInterval(function () { return _this.setDisplayDateTime(); }, 1000);
         this.setNumberToDisplay();
-        document.querySelectorAll('#btn-ac').forEach((btn) => {
-            btn.addEventListener('dblclick', () => this.toggleAudio());
+        document.querySelectorAll('#btn-ac').forEach(function (btn) {
+            btn.addEventListener('dblclick', function () { return _this.toggleAudio(); });
         });
-    }
-    toggleAudio() {
+    };
+    Calculator.prototype.toggleAudio = function () {
         this._audioOnOff = !this._audioOnOff;
-    }
-    playAudio() {
+    };
+    Calculator.prototype.playAudio = function () {
         if (this._audioOnOff) {
             this._audio.currentTime = 0;
             this._audio.play();
         }
-    }
-    addEventListenerAll(element, events, fn) {
-        events.split(" ").forEach(event => {
+    };
+    Calculator.prototype.addEventListenerAll = function (element, events, fn) {
+        events.split(" ").forEach(function (event) {
             element.addEventListener(event, fn, false);
         });
-    }
-    clearAll() {
+    };
+    Calculator.prototype.clearAll = function () {
         this._operation = [];
         this._lastNumber = '';
         this._lastOperator = '';
         this.setNumberToDisplay();
-    }
-    clearEntry() {
+    };
+    Calculator.prototype.clearEntry = function () {
         this._operation.pop();
         this.setNumberToDisplay();
-    }
-    getLastOperation() {
+    };
+    Calculator.prototype.getLastOperation = function () {
         return this._operation[this._operation.length - 1];
-    }
-    setLastOperation(value) {
+    };
+    Calculator.prototype.setLastOperation = function (value) {
         this._operation[this._operation.length - 1] = value;
-    }
-    isOperator(value) {
+    };
+    Calculator.prototype.isOperator = function (value) {
         return ['+', '-', '*', '%', '/'].indexOf(value) > -1;
-    }
-    pushOperation(value) {
+    };
+    Calculator.prototype.pushOperation = function (value) {
         this._operation.push(value);
         if (this._operation.length > 3) {
             this.calc();
         }
-    }
-    getResult() {
+    };
+    Calculator.prototype.getResult = function () {
+        var _this = this;
         try {
             return eval(this._operation.join(''));
         }
         catch (e) {
-            setTimeout(() => this.setError(), 1);
+            setTimeout(function () { return _this.setError(); }, 1);
         }
-    }
-    calc() {
-        let last = '';
+    };
+    Calculator.prototype.calc = function () {
+        var last = '';
         this._lastOperator = this.getLastItem();
         if (this._operation.length < 3) {
-            let firstNumber = this._operation[0];
+            var firstNumber = this._operation[0];
             this._operation = [firstNumber, this._lastOperator, this._lastNumber];
         }
         if (this._operation.length > 3) {
@@ -82,7 +83,7 @@ class Calculator {
         else if (this._operation.length == 3) {
             this._lastNumber = this.getLastItem(false);
         }
-        let result = this.getResult();
+        var result = this.getResult();
         if (last == '%') {
             result /= 100;
             this._operation = [result];
@@ -93,10 +94,11 @@ class Calculator {
                 this._operation.push(last);
         }
         this.setNumberToDisplay();
-    }
-    getLastItem(isOperator = true) {
-        let lastItem;
-        for (let i = this._operation.length - 1; i >= 0; i--) {
+    };
+    Calculator.prototype.getLastItem = function (isOperator) {
+        if (isOperator === void 0) { isOperator = true; }
+        var lastItem;
+        for (var i = this._operation.length - 1; i >= 0; i--) {
             if (this.isOperator(this._operation[i]) == isOperator) {
                 lastItem = this._operation[i];
                 break;
@@ -106,14 +108,14 @@ class Calculator {
             lastItem = isOperator ? this._lastOperator : this._lastNumber;
         }
         return lastItem;
-    }
-    setNumberToDisplay() {
-        let lastNumber = this.getLastItem(false);
+    };
+    Calculator.prototype.setNumberToDisplay = function () {
+        var lastNumber = this.getLastItem(false);
         if (!lastNumber)
             lastNumber = 0;
         this.display = lastNumber;
-    }
-    addOperation(value) {
+    };
+    Calculator.prototype.addOperation = function (value) {
         if (isNaN(this.getLastOperation())) {
             if (this.isOperator(value)) {
                 this.setLastOperation(value);
@@ -124,16 +126,16 @@ class Calculator {
             }
         }
         else {
-            let newValue = this.getLastOperation().toString() + value;
+            var newValue = this.getLastOperation().toString() + value;
             this.isOperator(value) ? this.pushOperation(value) : this.setLastOperation(newValue);
             this.setNumberToDisplay();
         }
-    }
-    setError() {
+    };
+    Calculator.prototype.setError = function () {
         this._display.innerHTML = 'Error';
-    }
-    addDot() {
-        let lastOperation = this.getLastOperation();
+    };
+    Calculator.prototype.addDot = function () {
+        var lastOperation = this.getLastOperation();
         if (typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1)
             return;
         if (this.isOperator(lastOperation) || !lastOperation) {
@@ -143,8 +145,8 @@ class Calculator {
             this.setLastOperation(lastOperation.toString() + '.');
         }
         this.setNumberToDisplay();
-    }
-    execBtn(value) {
+    };
+    Calculator.prototype.execBtn = function (value) {
         this.playAudio();
         switch (value) {
             case 'AC':
@@ -190,53 +192,65 @@ class Calculator {
                 this.setError();
                 break;
         }
-    }
-    initButtonsEvents() {
-        let buttons = document.querySelectorAll(".buttons");
-        buttons.forEach((btn) => {
-            this.addEventListenerAll(btn, 'click drag ', () => {
-                let textBtn = btn.innerHTML;
+    };
+    Calculator.prototype.initButtonsEvents = function () {
+        var _this = this;
+        var buttons = document.querySelectorAll(".buttons");
+        buttons.forEach(function (btn) {
+            _this.addEventListenerAll(btn, 'click drag ', function () {
+                var textBtn = btn.innerHTML;
                 if (textBtn == '÷')
                     textBtn = '/';
-                this.execBtn(textBtn);
+                _this.execBtn(textBtn);
             });
-            this.addEventListenerAll(btn, 'mouseover mouseup mousedown', () => {
+            _this.addEventListenerAll(btn, 'mouseover mouseup mousedown', function () {
                 btn.style.cursor = 'pointer';
             });
         });
-    }
-    setDisplayDateTime() {
+    };
+    Calculator.prototype.setDisplayDateTime = function () {
         this.date = this.currentDate.toLocaleDateString(this._locale);
         this.hour = this.currentDate.toLocaleTimeString(this._locale);
-    }
-    // Getters & Setters
-    get display() {
-        var _a;
-        return (_a = this._display) === null || _a === void 0 ? void 0 : _a.innerHTML;
-    }
-    set display(value) {
-        if (value.toString().length > 9) {
-            this.setError();
-            return;
-        }
-        console.log(value.length);
-        this._display.innerHTML = value;
-    }
-    get currentDate() {
-        return new Date();
-    }
-    get date() {
-        return this._date.innerHTML;
-    }
-    set date(value) {
-        this._date.innerHTML = value;
-    }
-    get hour() {
-        return this._hour.innerHTML;
-    }
-    set hour(value) {
-        this._hour.innerHTML = value;
-    }
-}
-const calc = new Calculator;
-//# sourceMappingURL=main.js.map
+    };
+    Object.defineProperty(Calculator.prototype, "display", {
+        // Getters & Setters
+        get: function () {
+            var _a;
+            return (_a = this._display) === null || _a === void 0 ? void 0 : _a.innerHTML;
+        },
+        set: function (value) {
+            this._display.innerHTML = (value.length > 9) ? 'Error' : value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Calculator.prototype, "currentDate", {
+        get: function () {
+            return new Date();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Calculator.prototype, "date", {
+        get: function () {
+            return this._date.innerHTML;
+        },
+        set: function (value) {
+            this._date.innerHTML = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Calculator.prototype, "hour", {
+        get: function () {
+            return this._hour.innerHTML;
+        },
+        set: function (value) {
+            this._hour.innerHTML = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Calculator;
+}());
+var calc = new Calculator;

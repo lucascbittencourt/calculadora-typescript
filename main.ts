@@ -117,6 +117,7 @@ class Calculator
         {
             last = this._operation.pop()
             this._lastNumber = this.getResult()
+
         }else if (this._operation.length == 3)
         {
             this._lastNumber = this.getLastItem(false)
@@ -306,7 +307,15 @@ class Calculator
     public set display(value: string)
     {
 
-        this._display.innerHTML = (value.length > 9) ? 'Error' : value
+        if (value.toString().length > 9)
+        {
+            this.setError()
+            return
+        }
+
+        console.log(value.length)
+
+        this._display.innerHTML = value
         
     }
 
